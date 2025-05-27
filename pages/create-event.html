@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event - Community Connect Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        /* Create Event Specific Styles */
+        .create-event-section {
+            padding-top: var(--space-xl);
+            padding-bottom: var(--space-3xl);
+            background-color: var(--light);
+        }
+        
+        .create-event-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .create-event-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .create-event-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--medium-dark);
+        }
+        
+        .create-event-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .form-section {
+            margin-bottom: var(--space-xl);
+        }
+        
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: var(--font-lg);
+        }
+        
+        .form-section-title i {
+            margin-right: var(--space-sm);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .form-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .form-tips {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: var(--space-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .form-tips h3 {
+            margin-bottom: var(--space-xs);
+            font-size: var(--font-md);
+            color: var(--primary-dark);
+        }
+        
+        .form-tips ul {
+            margin-left: var(--space-md);
+            list-style-type: disc;
+        }
+        
+        .form-tips li {
+            margin-bottom: var(--space-xs);
+            color: var(--medium-dark);
+        }
+        
+        .preview-section {
+            border: 1px dashed var(--medium-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+        
+        .preview-toggle {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .preview-toggle i {
+            margin-right: var(--space-xs);
+            transition: transform 0.3s ease;
+        }
+        
+        .preview-toggle.collapsed i {
+            transform: rotate(-90deg);
+        }
+        
+        .preview-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .preview-content.collapsed {
+            max-height: 0;
+        }
+        
+        .event-preview-card {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-top: var(--space-md);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-xl);
+        }
+        
+        .character-counter {
+            display: flex;
+            justify-content: flex-end;
+            font-size: var(--font-sm);
+            color: var(--medium);
+            margin-top: var(--space-xs);
+        }
+        
+        .limit-warning {
+            color: var(--warning);
+        }
+        
+        .limit-exceeded {
+            color: var(--danger);
+        }
+        
+        /* Date and time picker enhancements */
+        input[type="date"], input[type="time"] {
+            padding-right: var(--space-md);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .form-column {
+                width: 100%;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .form-actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#4CAF50"/>
+                    </svg>
+                    <span>Community Connect Hub</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li id="auth-link"><a href="login.html">Login</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Create Event Section -->
+    <section class="create-event-section page-enter">
+        <div class="container">
+            <div class="create-event-container">
+                <div class="create-event-header">
+                    <h1 id="page-title">Create a Community Event</h1>
+                    <p>Share your event with neighbors and build a stronger community together.</p>
+                </div>
+                
+                <div class="create-event-card">
+                    <div class="form-tips">
+                        <h3><i class="fas fa-lightbulb"></i> Tips for a Successful Event</h3>
+                        <ul>
+                            <li>Provide a clear and descriptive title</li>
+                            <li>Include all important details in the description</li>
+                            <li>Set a reasonable maximum number of attendees</li>
+                            <li>Choose the right category to help people find your event</li>
+                        </ul>
+                    </div>
+                    
+                    <form id="create-event-form">
+                        <!-- Event Basics Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-info-circle"></i> Event Basics
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="title">Event Title*</label>
+                                <input type="text" id="title" name="title" placeholder="Give your event a clear and catchy title" maxlength="100" required>
+                                <div class="character-counter">
+                                    <span id="title-counter">0</span>/100
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Event Description*</label>
+                                <textarea id="description" name="description" placeholder="Describe your event in detail. Include what attendees can expect, what to bring, and any other important information." rows="6" maxlength="1000" required></textarea>
+                                <div class="character-counter">
+                                    <span id="description-counter">0</span>/1000
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="category">Event Category*</label>
+                                <select id="category" name="category" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="social">Social</option>
+                                    <option value="volunteer">Volunteer</option>
+                                    <option value="education">Education</option>
+                                    <option value="sports">Sports</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Date & Time Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-calendar-alt"></i> Date & Time
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="date">Event Date*</label>
+                                        <input type="date" id="date" name="date" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="time">Start Time*</label>
+                                        <input type="time" id="time" name="time" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Location Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-map-marker-alt"></i> Location
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="location">Event Location*</label>
+                                <input type="text" id="location" name="location" placeholder="Provide the address or location name" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Capacity Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="fas fa-users"></i> Capacity
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="maxAttendees">Maximum Number of Attendees*</label>
+                                <input type="number" id="maxAttendees" name="maxAttendees" min="1" max="1000" value="20" required>
+                                <small>Set a realistic limit based on venue capacity and event type.</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Preview Section -->
+                        <div class="preview-section">
+                            <div class="preview-header">
+                                <h3>Event Preview</h3>
+                                <div class="preview-toggle">
+                                    <i class="fas fa-chevron-down"></i> 
+                                    <span>Show Preview</span>
+                                </div>
+                            </div>
+                            
+                            <div class="preview-content collapsed">
+                                <p>This is how your event will appear to others:</p>
+                                
+                                <div class="event-preview-card" id="event-preview">
+                                    <!-- Event preview will be inserted here -->
+                                    <div class="event-image">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <span class="event-category">Category</span>
+                                    </div>
+                                    <div class="event-details">
+                                        <div class="event-date">
+                                            <i class="fas fa-calendar-day"></i>
+                                            <span>Date at Time</span>
+                                        </div>
+                                        <h3 class="event-title">Event Title</h3>
+                                        <div class="event-location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>Location</span>
+                                        </div>
+                                        <p class="event-description">Event description will appear here.</p>
+                                        <div class="event-footer">
+                                            <div class="event-attendees">
+                                                <i class="fas fa-user-friends"></i>
+                                                <span>1/20</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" id="cancel-btn" class="btn btn-outline">Cancel</button>
+                            <button type="submit" id="submit-btn" class="btn btn-primary">Create Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#FFFFFF"/>
+                    </svg>
+                    <h3>Community Connect Hub</h3>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="community.html">Community</a></li>
+                            <li><a href="create-event.html">Create Event</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Account</h4>
+                        <ul>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="signup.html">Sign Up</a></li>
+                            <li><a href="profile.html">Profile</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Community Connect Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification hidden">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <p class="notification-message"></p>
+        </div>
+        <button class="notification-close">×</button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const currentUser = Auth.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = 'login.html?redirect=create-event';
+                return;
+            }
+            
+            // Check if we're editing an existing event
+            const urlParams = new URLSearchParams(window.location.search);
+            const editEventId = urlParams.get('edit');
+            let eventBeingEdited = null;
+            
+            // Variables for the form
+            const form = document.getElementById('create-event-form');
+            const titleInput = document.getElementById('title');
+            const descriptionInput = document.getElementById('description');
+            const categorySelect = document.getElementById('category');
+            const dateInput = document.getElementById('date');
+            const timeInput = document.getElementById('time');
+            const locationInput = document.getElementById('location');
+            const maxAttendeesInput = document.getElementById('maxAttendees');
+            const submitBtn = document.getElementById('submit-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const pageTitle = document.getElementById('page-title');
+            
+            // If editing, load event data
+            if (editEventId) {
+                loadEventForEditing(editEventId);
+                pageTitle.textContent = 'Edit Community Event';
+                submitBtn.textContent = 'Update Event';
+            } else {
+                // Set minimum date to today
+                const today = new Date();
+                const formattedToday = today.toISOString().split('T')[0];
+                dateInput.min = formattedToday;
+            }
+            
+            // Character counters
+            setupCharacterCounter(titleInput, 'title-counter', 100);
+            setupCharacterCounter(descriptionInput, 'description-counter', 1000);
+            
+            // Preview toggle
+            const previewToggle = document.querySelector('.preview-toggle');
+            const previewContent = document.querySelector('.preview-content');
+            
+            previewToggle.addEventListener('click', () => {
+                previewContent.classList.toggle('collapsed');
+                
+                if (previewContent.classList.contains('collapsed')) {
+                    previewToggle.querySelector('i').className = 'fas fa-chevron-down';
+                    previewToggle.querySelector('span').textContent = 'Show Preview';
+                } else {
+                    previewToggle.querySelector('i').className = 'fas fa-chevron-up';
+                    previewToggle.querySelector('span').textContent = 'Hide Preview';
+                    updateEventPreview();
+                }
+            });
+            
+            // Live preview updates
+            [titleInput, descriptionInput, categorySelect, dateInput, timeInput, locationInput, maxAttendeesInput].forEach(input => {
+                input.addEventListener('input', updateEventPreview);
+                input.addEventListener('change', updateEventPreview);
+            });
+            
+            // Form submission
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    UI.showLoading();
+                    
+                    try {
+                        // Collect form data
+                        const eventData = {
+                            title: titleInput.value.trim(),
+                            description: descriptionInput.value.trim(),
+                            category: categorySelect.value,
+                            date: dateInput.value,
+                            time: timeInput.value,
+                            location: locationInput.value.trim(),
+                            maxAttendees: parseInt(maxAttendeesInput.value),
+                            createdBy: currentUser.id
+                        };
+                        
+                        // If editing, update existing event
+                        if (editEventId) {
+                            eventData.id = editEventId;
+                            
+                            // Preserve attendees
+                            if (eventBeingEdited && eventBeingEdited.attendees) {
+                                eventData.attendees = eventBeingEdited.attendees;
+                            } else {
+                                eventData.attendees = [currentUser.id];
+                            }
+                            
+                            await DataService.updateEvent(eventData);
+                            UI.showNotification('Event updated successfully!', 'success');
+                        }
+                        // Otherwise create new event
+                        else {
+                            eventData.id = Date.now().toString();
+                            eventData.attendees = [currentUser.id];
+                            eventData.createdAt = new Date().toISOString();
+                            
+                            await DataService.createEvent(eventData);
+                            UI.showNotification('Event created successfully!', 'success');
+                        }
+                        
+                        // Redirect to event details page
+                        setTimeout(() => {
+                            window.location.href = `event-details.html?id=${editEventId || eventData.id}`;
+                        }, 1500);
+                        
+                    } catch (error) {
+                        console.error('Error saving event:', error);
+                        UI.showNotification('Error saving event. Please try again.', 'error');
+                        UI.hideLoading();
+                    }
+                }
+            });
+            
+            // Cancel button
+            cancelBtn.addEventListener('click', () => {
+                // Confirm cancellation if form has been filled out
+                if (formHasChanges()) {
+                    if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                        navigateBack();
+                    }
+                } else {
+                    navigateBack();
+                }
+            });
+            
+            // Function to check if form has changes
+            function formHasChanges() {
+                if (editEventId) {
+                    // Check if any fields differ from the original event
+                    return (
+                        titleInput.value !== eventBeingEdited.title ||
+                        descriptionInput.value !== eventBeingEdited.description ||
+                        categorySelect.value !== eventBeingEdited.category ||
+                        dateInput.value !== eventBeingEdited.date ||
+                        timeInput.value !== eventBeingEdited.time ||
+                        locationInput.value !== eventBeingEdited.location ||
+                        parseInt(maxAttendeesInput.value) !== eventBeingEdited.maxAttendees
+                    );
+                } else {
+                    // Check if any required fields have been filled
+                    return (
+                        titleInput.value.trim() !== '' ||
+                        descriptionInput.value.trim() !== '' ||
+                        categorySelect.value !== '' ||
+                        locationInput.value.trim() !== ''
+                    );
+                }
+            }
+            
+            // Navigate back to previous page
+            function navigateBack() {
+                if (editEventId) {
+                    window.location.href = `event-details.html?id=${editEventId}`;
+                } else {
+                    window.location.href = 'events.html';
+                }
+            }
+            
+            // Load event data for editing
+            async function loadEventForEditing(eventId) {
+                UI.showLoading();
+                
+                try {
+                    // Get event data
+                    const event = await DataService.getEventById(eventId);
+                    
+                    if (!event) {
+                        throw new Error('Event not found');
+                    }
+                    
+                    // Check if user is allowed to edit this event
+                    if (event.createdBy !== currentUser.id) {
+                        UI.showNotification('You do not have permission to edit this event', 'error');
+                        setTimeout(() => {
+                            window.location.href = `event-details.html?id=${eventId}`;
+                        }, 2000);
+                        return;
+                    }
+                    
+                    // Store the event being edited
+                    eventBeingEdited = event;
+                    
+                    // Fill form with event data
+                    titleInput.value = event.title;
+                    descriptionInput.value = event.description;
+                    categorySelect.value = event.category;
+                    dateInput.value = event.date;
+                    timeInput.value = event.time;
+                    locationInput.value = event.location;
+                    maxAttendeesInput.value = event.maxAttendees;
+                    
+                    // Update character counters
+                    document.getElementById('title-counter').textContent = titleInput.value.length;
+                    document.getElementById('description-counter').textContent = descriptionInput.value.length;
+                    
+                    // Update preview
+                    updateEventPreview();
+                    
+                } catch (error) {
+                    console.error('Error loading event for editing:', error);
+                    UI.showNotification('Error loading event', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'events.html';
+                    }, 2000);
+                } finally {
+                    UI.hideLoading();
+                }
+            }
+            
+            // Setup character counter for input elements
+            function setupCharacterCounter(inputElement, counterId, maxLength) {
+                const counter = document.getElementById(counterId);
+                
+                inputElement.addEventListener('input', () => {
+                    const length = inputElement.value.length;
+                    counter.textContent = length;
+                    
+                    // Add warning classes when approaching limit
+                    if (length > maxLength * 0.9) {
+                        counter.className = 'limit-warning';
+                        
+                        if (length >= maxLength) {
+                            counter.className = 'limit-exceeded';
+                        }
+                    } else {
+                        counter.className = '';
+                    }
+                });
+            }
+            
+            // Update the event preview
+            function updateEventPreview() {
+                if (previewContent.classList.contains('collapsed')) {
+                    return;
+                }
+                
+                const previewElement = document.getElementById('event-preview');
+                
+                // Get current values
+                const title = titleInput.value || 'Event Title';
+                const description = descriptionInput.value || 'Event description will appear here.';
+                const category = categorySelect.options[categorySelect.selectedIndex]?.text || 'Category';
+                let dateFormatted = 'Date';
+                
+                if (dateInput.value) {
+                    const eventDate = new Date(dateInput.value);
+                    dateFormatted = eventDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                }
+                
+                const time = timeInput.value || 'Time';
+                const location = locationInput.value || 'Location';
+                const maxAttendees = maxAttendeesInput.value || '20';
+                
+                // Determine category icon
+                let categoryIcon;
+                switch (categorySelect.value) {
+                    case 'social':
+                        categoryIcon = 'fas fa-users';
+                        break;
+                    case 'volunteer':
+                        categoryIcon = 'fas fa-hands-helping';
+                        break;
+                    case 'education':
+                        categoryIcon = 'fas fa-graduation-cap';
+                        break;
+                    case 'sports':
+                        categoryIcon = 'fas fa-running';
+                        break;
+                    default:
+                        categoryIcon = 'fas fa-calendar-alt';
+                }
+                
+                // Update preview
+                previewElement.innerHTML = `
+                    <div class="event-image">
+                        <i class="${categoryIcon}"></i>
+                        <span class="event-category">${category}</span>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-date">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>${dateFormatted} at ${time}</span>
+                        </div>
+                        <h3 class="event-title">${title}</h3>
+                        <div class="event-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${location}</span>
+                        </div>
+                        <p class="event-description">${description}</p>
+                        <div class="event-footer">
+                            <div class="event-attendees">
+                                <i class="fas fa-user-friends"></i>
+                                <span>1/${maxAttendees}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Validate form before submission
+            function validateForm() {
+                let isValid = true;
+                
+                // Clear all previous errors
+                document.querySelectorAll('.error-message').forEach(el => el.remove());
+                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+                
+                // Check title
+                if (!titleInput.value.trim()) {
+                    showError(titleInput, 'Please enter a title for your event');
+                    isValid = false;
+                } else if (titleInput.value.length < 5) {
+                    showError(titleInput, 'Title should be at least 5 characters long');
+                    isValid = false;
+                }
+                
+                // Check description
+                if (!descriptionInput.value.trim()) {
+                    showError(descriptionInput, 'Please enter a description for your event');
+                    isValid = false;
+                } else if (descriptionInput.value.length < 20) {
+                    showError(descriptionInput, 'Description should be at least 20 characters long');
+                    isValid = false;
+                }
+                
+                // Check category
+                if (!categorySelect.value) {
+                    showError(categorySelect, 'Please select a category');
+                    isValid = false;
+                }
+                
+                // Check date
+                if (!dateInput.value) {
+                    showError(dateInput, 'Please select a date');
+                    isValid = false;
+                } else {
+                    const selectedDate = new Date(dateInput.value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (selectedDate < today) {
+                        showError(dateInput, 'Event date cannot be in the past');
+                        isValid = false;
+                    }
+                }
+                
+                // Check time
+                if (!timeInput.value) {
+                    showError(timeInput, 'Please select a time');
+                    isValid = false;
+                }
+                
+                // Check location
+                if (!locationInput.value.trim()) {
+                    showError(locationInput, 'Please enter a location');
+                    isValid = false;
+                }
+                
+                // Check max attendees
+                const maxAttendees = parseInt(maxAttendeesInput.value);
+                if (isNaN(maxAttendees) || maxAttendees <= 0) {
+                    showError(maxAttendeesInput, 'Please enter a valid number');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Show error message for an input
+            function showError(inputElement, message) {
+                inputElement.classList.add('input-error');
+                
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.textContent = message;
+                
+                inputElement.parentNode.appendChild(errorMessage);
+                
+                // Add shake animation
+                inputElement.classList.add('shake');
+                setTimeout(() => {
+                    inputElement.classList.remove('shake');
+                }, 820);
+            }
+        });
+    </script>
+</body>
+</html>

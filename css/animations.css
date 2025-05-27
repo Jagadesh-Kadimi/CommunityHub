@@ -1,0 +1,339 @@
+/* 
+Community Connect Hub - Animations
+----------------------------------- 
+*/
+
+/* Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+    opacity: 0;
+}
+
+/* Slide In */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-left {
+    animation: slideInLeft 1s forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 1s forwards;
+}
+
+.slide-in-up {
+    animation: slideInUp 1s forwards;
+}
+
+/* Pulse */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Button Hover Effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::after,
+.btn:focus::after {
+    width: 300%;
+    height: 300%;
+}
+
+/* Card Hover Effects */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Feature Icon Animation */
+.feature-icon i {
+    transition: transform 0.3s;
+}
+
+.feature-card:hover .feature-icon i {
+    transform: scale(1.2) rotate(10deg);
+}
+
+/* Page Transitions */
+.page-transition-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.page-transition-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-transition-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* Shimmer Loading Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, 
+                               rgba(255, 255, 255, 0),
+                               rgba(255, 255, 255, 0.6),
+                               rgba(255, 255, 255, 0));
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.loading-card {
+    height: 300px;
+    border-radius: var(--radius-md);
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+}
+
+.loading-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, 
+                               rgba(255, 255, 255, 0),
+                               rgba(255, 255, 255, 0.6),
+                               rgba(255, 255, 255, 0));
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.bounce {
+    animation: bounce 2s infinite;
+}
+
+/* Fade In Up for Cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.5s forwards;
+}
+
+/* Staggered animations for multiple elements */
+.stagger-animation > * {
+    opacity: 0;
+}
+
+.stagger-animation > *:nth-child(1) {
+    animation: fadeInUp 0.5s 0.1s forwards;
+}
+
+.stagger-animation > *:nth-child(2) {
+    animation: fadeInUp 0.5s 0.2s forwards;
+}
+
+.stagger-animation > *:nth-child(3) {
+    animation: fadeInUp 0.5s 0.3s forwards;
+}
+
+.stagger-animation > *:nth-child(4) {
+    animation: fadeInUp 0.5s 0.4s forwards;
+}
+
+.stagger-animation > *:nth-child(5) {
+    animation: fadeInUp 0.5s 0.5s forwards;
+}
+
+/* Button Click Animation */
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn-click {
+    animation: buttonClick 0.3s forwards;
+}
+
+/* Page Enter Animation */
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page-enter {
+    animation: pageEnter 0.5s forwards;
+}
+
+/* Notification Animation */
+@keyframes slideInNotification {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutNotification {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+.notification.show {
+    animation: slideInNotification 0.5s forwards;
+}
+
+.notification.hide {
+    animation: slideOutNotification 0.5s forwards;
+}
+
+/* Shake Animation for Error */
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {transform: translateX(10px);}
+}
+
+.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}

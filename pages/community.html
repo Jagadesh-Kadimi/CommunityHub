@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Community Connect Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        /* Community Page Specific Styles */
+        .community-hero {
+            background: linear-gradient(to right, rgba(76, 175, 80, 0.8), rgba(76, 175, 80, 0.6)), url('https://source.unsplash.com/random/1600x900/?community');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: var(--space-2xl) 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .community-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            color: white;
+        }
+        
+        .community-hero p {
+            max-width: 800px;
+            margin: 0 auto var(--space-xl);
+            font-size: var(--font-lg);
+        }
+        
+        .community-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xl);
+            flex-wrap: wrap;
+            margin-top: var(--space-xl);
+        }
+        
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            min-width: 200px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stat-label {
+            color: var(--medium-dark);
+            font-weight: 500;
+        }
+        
+        .members-section {
+            padding: var(--space-2xl) 0;
+            background-color: var(--light);
+        }
+        
+        .search-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+            align-items: center;
+        }
+        
+        .search-wrapper {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-wrapper i {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--medium);
+        }
+        
+        .members-search {
+            width: 100%;
+            padding: var(--space-md) var(--space-md) var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--medium-light);
+            font-size: var(--font-md);
+        }
+        
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .member-card {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .member-header {
+            background-color: var(--primary-light);
+            padding: var(--space-md);
+            text-align: center;
+            color: var(--primary-dark);
+            position: relative;
+        }
+        
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            background-color: var(--white);
+            border-radius: 50%;
+            margin: 0 auto var(--space-md);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .member-avatar i {
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .member-details {
+            padding: var(--space-lg);
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .member-name {
+            color: var(--dark);
+            margin-bottom: var(--space-xs);
+            font-weight: 600;
+        }
+        
+        .member-email {
+            color: var(--medium);
+            margin-bottom: var(--space-md);
+            font-size: var(--font-sm);
+        }
+        
+        .member-bio {
+            color: var(--medium-dark);
+            margin-bottom: var(--space-md);
+            flex-grow: 1;
+        }
+        
+        .member-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        
+        .member-stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .member-actions {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .member-since {
+            background-color: var(--light);
+            padding: var(--space-sm);
+            text-align: center;
+            color: var(--medium);
+            font-size: var(--font-sm);
+            border-top: 1px solid var(--medium-light);
+        }
+        
+        .community-events-section {
+            padding: var(--space-2xl) 0;
+            background-color: var(--white);
+        }
+        
+        .view-all-events {
+            text-align: center;
+            margin-top: var(--space-xl);
+        }
+        
+        .community-initiatives {
+            padding: var(--space-2xl) 0;
+            background-color: var(--light);
+        }
+        
+        .initiatives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .initiative-card {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+        }
+        
+        .initiative-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .initiative-icon {
+            height: 120px;
+            background-color: var(--primary-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .initiative-content {
+            padding: var(--space-lg);
+        }
+        
+        .initiative-title {
+            color: var(--dark);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .initiative-description {
+            color: var(--medium-dark);
+            margin-bottom: var(--space-md);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: var(--space-xl);
+            gap: var(--space-xs);
+        }
+        
+        .page-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: var(--radius-round);
+            border: 1px solid var(--medium-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .page-number.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        
+        .page-number:hover:not(.active) {
+            background-color: var(--light);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: var(--space-xl);
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--medium-light);
+            margin-bottom: var(--space-md);
+        }
+        
+        .empty-state p {
+            color: var(--medium);
+            margin-bottom: var(--space-md);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#4CAF50"/>
+                    </svg>
+                    <span>Community Connect Hub</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="community.html" class="active">Community</a></li>
+                    <li id="auth-link"><a href="login.html">Login</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Community Hero Section -->
+    <section class="community-hero">
+        <div class="container">
+            <h1 class="fade-in">Our Community</h1>
+            <p class="fade-in delay-1">Connect with neighbors, build relationships, and make our neighborhood stronger together</p>
+            
+            <div class="community-stats fade-in delay-2">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="members-count">0</div>
+                    <div class="stat-label">Members</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-value" id="events-count">0</div>
+                    <div class="stat-label">Events</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Initiatives</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Members Section -->
+    <section class="members-section">
+        <div class="container">
+            <h2 class="section-title">Community Members</h2>
+            
+            <div class="search-filter-bar">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="members-search" class="members-search" placeholder="Search members...">
+                </div>
+            </div>
+            
+            <div id="community-members" class="members-grid">
+                <!-- Members will be loaded here -->
+                <div class="loading-placeholder">
+                    <div class="spinner"></div>
+                    <p>Loading community members...</p>
+                </div>
+            </div>
+            
+            <div class="pagination" id="members-pagination">
+                <div class="page-number active">1</div>
+                <div class="page-number">2</div>
+                <div class="page-number">3</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Events Section -->
+    <section class="community-events-section">
+        <div class="container">
+            <h2 class="section-title">Upcoming Community Events</h2>
+            
+            <div id="community-events" class="events-grid">
+                <!-- Events will be loaded here -->
+                <div class="loading-placeholder">
+                    <div class="spinner"></div>
+                    <p>Loading community events...</p>
+                </div>
+            </div>
+            
+            <div class="view-all-events">
+                <a href="events.html" class="btn btn-primary">
+                    View All Events <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Initiatives Section -->
+    <section class="community-initiatives">
+        <div class="container">
+            <h2 class="section-title">Community Initiatives</h2>
+            
+            <div class="initiatives-grid">
+                <div class="initiative-card fade-in">
+                    <div class="initiative-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <div class="initiative-content">
+                        <h3 class="initiative-title">Community Garden</h3>
+                        <p class="initiative-description">Our community garden provides space for neighbors to grow fresh produce and beautiful flowers while connecting with others.</p>
+                        <a href="#" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="initiative-card fade-in delay-1">
+                    <div class="initiative-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <div class="initiative-content">
+                        <h3 class="initiative-title">Little Free Library</h3>
+                        <p class="initiative-description">Our neighborhood little free libraries promote literacy and community sharing. Take a book, leave a book!</p>
+                        <a href="#" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="initiative-card fade-in delay-2">
+                    <div class="initiative-icon">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <div class="initiative-content">
+                        <h3 class="initiative-title">Neighborhood Cleanup</h3>
+                        <p class="initiative-description">Monthly cleanup events to keep our streets, parks, and community spaces clean and beautiful.</p>
+                        <a href="#" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to get involved?</h2>
+                <p>Join your neighbors in building a better community through participation, connection, and shared experiences.</p>
+                <a href="signup.html" class="btn btn-primary" id="footer-cta">Join Our Community</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#FFFFFF"/>
+                    </svg>
+                    <h3>Community Connect Hub</h3>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="community.html">Community</a></li>
+                            <li><a href="create-event.html">Create Event</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Account</h4>
+                        <ul>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="signup.html">Sign Up</a></li>
+                            <li><a href="profile.html">Profile</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Community Connect Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification hidden">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <p class="notification-message"></p>
+        </div>
+        <button class="notification-close">×</button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = Auth.getCurrentUser();
+            
+            // Update navigation based on auth status
+            UI.updateAuthUI(currentUser);
+            
+            // Initialize the page
+            loadCommunityData();
+            
+            // Member search functionality
+            const searchInput = document.getElementById('members-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    filterMembers(searchTerm);
+                });
+            }
+            
+            // Load community data
+            async function loadCommunityData() {
+                UI.showLoading();
+                
+                try {
+                    // Load community members
+                    await loadCommunityMembers();
+                    
+                    // Load upcoming events
+                    await loadUpcomingEvents();
+                    
+                    // Update community stats
+                    updateCommunityStats();
+                    
+                } catch (error) {
+                    console.error('Error loading community data:', error);
+                    UI.showNotification('Error loading community data', 'error');
+                } finally {
+                    UI.hideLoading();
+                }
+            }
+            
+            // Load community members
+            async function loadCommunityMembers() {
+                try {
+                    // Get community members
+                    const users = await DataService.getUsers();
+                    
+                    // Update members count
+                    document.getElementById('members-count').textContent = users.length;
+                    
+                    // Render members
+                    renderCommunityMembers(users);
+                    
+                    return users;
+                } catch (error) {
+                    console.error('Error loading community members:', error);
+                    throw error;
+                }
+            }
+            
+            // Render community members
+            function renderCommunityMembers(users) {
+                const container = document.getElementById('community-members');
+                if (!container) return;
+                
+                // Clear container
+                container.innerHTML = '';
+                
+                if (users.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>No community members found.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Create member cards
+                users.forEach((user, index) => {
+                    const memberCard = document.createElement('div');
+                    memberCard.className = 'member-card fade-in';
+                    memberCard.style.animationDelay = `${index * 0.1}s`;
+                    
+                    // Format date
+                    const joinDate = new Date(user.createdAt);
+                    const joinDateFormatted = joinDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long'
+                    });
+                    
+                    memberCard.innerHTML = `
+                        <div class="member-header">
+                            <div class="member-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                        </div>
+                        <div class="member-details">
+                            <h3 class="member-name">${user.name}</h3>
+                            <p class="member-email">${user.email}</p>
+                            <p class="member-bio">Community member who enjoys participating in neighborhood events and activities.</p>
+                            <div class="member-stats">
+                                <div class="member-stat">
+                                    <span class="stat-number" id="events-created-${user.id}">0</span>
+                                    <div>Events</div>
+                                </div>
+                                <div class="member-stat">
+                                    <span class="stat-number" id="events-joined-${user.id}">0</span>
+                                    <div>Attending</div>
+                                </div>
+                            </div>
+                            <div class="member-actions">
+                                <button class="btn btn-primary btn-sm connect-btn" data-user-id="${user.id}">
+                                    <i class="fas fa-user-plus"></i> Connect
+                                </button>
+                            </div>
+                        </div>
+                        <div class="member-since">
+                            Member since ${joinDateFormatted}
+                        </div>
+                    `;
+                    
+                    container.appendChild(memberCard);
+                    
+                    // Get event statistics for this user
+                    getUserEventStats(user.id);
+                });
+                
+                // Add event listeners to connect buttons
+                setupConnectButtons();
+            }
+            
+            // Filter members based on search term
+            function filterMembers(searchTerm) {
+                const memberCards = document.querySelectorAll('.member-card');
+                
+                let hasResults = false;
+                
+                memberCards.forEach(card => {
+                    const name = card.querySelector('.member-name').textContent.toLowerCase();
+                    const email = card.querySelector('.member-email').textContent.toLowerCase();
+                    
+                    if (name.includes(searchTerm) || email.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                        hasResults = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show empty state if no results
+                const container = document.getElementById('community-members');
+                const emptyState = container.querySelector('.empty-state');
+                
+                if (!hasResults) {
+                    if (!emptyState) {
+                        const noResults = document.createElement('div');
+                        noResults.className = 'empty-state';
+                        noResults.innerHTML = `
+                            <i class="fas fa-search"></i>
+                            <p>No members found matching "${searchTerm}"</p>
+                        `;
+                        container.appendChild(noResults);
+                    }
+                } else if (emptyState) {
+                    emptyState.remove();
+                }
+            }
+            
+            // Load upcoming events
+            async function loadUpcomingEvents() {
+                try {
+                    // Get all events
+                    const events = await DataService.getEvents();
+                    
+                    // Update events count
+                    document.getElementById('events-count').textContent = events.length;
+                    
+                    // Filter upcoming events
+                    const upcomingEvents = getUpcomingEvents(events, 3);
+                    
+                    // Render events
+                    renderCommunityEvents(upcomingEvents);
+                    
+                    return events;
+                } catch (error) {
+                    console.error('Error loading upcoming events:', error);
+                    throw error;
+                }
+            }
+            
+            // Get upcoming events
+            function getUpcomingEvents(events, limit = 3) {
+                const today = new Date();
+                
+                // Filter for events with dates in the future
+                let upcomingEvents = events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate >= today;
+                });
+                
+                // Sort by date (closest first)
+                upcomingEvents.sort((a, b) => {
+                    return new Date(a.date) - new Date(b.date);
+                });
+                
+                // Limit to specified number
+                if (limit) {
+                    upcomingEvents = upcomingEvents.slice(0, limit);
+                }
+                
+                return upcomingEvents;
+            }
+            
+            // Render community events
+            function renderCommunityEvents(events) {
+                const container = document.getElementById('community-events');
+                if (!container) return;
+                
+                // Clear container
+                container.innerHTML = '';
+                
+                if (events.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>No upcoming events found.</p>
+                            <a href="create-event.html" class="btn btn-primary">Create an Event</a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Create event cards
+                events.forEach((event, index) => {
+                    const card = UI.createEventCard(event, index * 100);
+                    container.appendChild(card);
+                });
+            }
+            
+            // Get event statistics for a user
+            async function getUserEventStats(userId) {
+                try {
+                    const events = await DataService.getEvents();
+                    
+                    // Count events created by user
+                    const eventsCreated = events.filter(event => event.createdBy === userId).length;
+                    
+                    // Count events joined by user
+                    const eventsJoined = events.filter(event => 
+                        event.attendees && event.attendees.includes(userId)
+                    ).length;
+                    
+                    // Update stats in UI
+                    const createdElement = document.getElementById(`events-created-${userId}`);
+                    const joinedElement = document.getElementById(`events-joined-${userId}`);
+                    
+                    if (createdElement) createdElement.textContent = eventsCreated;
+                    if (joinedElement) joinedElement.textContent = eventsJoined;
+                    
+                } catch (error) {
+                    console.error(`Error getting event stats for user ${userId}:`, error);
+                }
+            }
+            
+            // Setup connect buttons
+            function setupConnectButtons() {
+                const connectButtons = document.querySelectorAll('.connect-btn');
+                
+                connectButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // In a real app, this would send a connection request
+                        // For now, just toggle the button state
+                        
+                        if (!currentUser) {
+                            // Redirect to login if not logged in
+                            window.location.href = 'login.html?redirect=community';
+                            return;
+                        }
+                        
+                        if (this.classList.contains('connected')) {
+                            this.innerHTML = '<i class="fas fa-user-plus"></i> Connect';
+                            this.classList.remove('connected');
+                            this.classList.remove('btn-outline');
+                            this.classList.add('btn-primary');
+                            
+                            UI.showNotification('Connection removed', 'info');
+                        } else {
+                            this.innerHTML = '<i class="fas fa-check"></i> Connected';
+                            this.classList.add('connected');
+                            this.classList.remove('btn-primary');
+                            this.classList.add('btn-outline');
+                            
+                            UI.showNotification('Connection request sent!', 'success');
+                        }
+                    });
+                });
+            }
+            
+            // Update community stats with animation
+            function updateCommunityStats() {
+                const statValues = document.querySelectorAll('.stat-value');
+                
+                statValues.forEach(stat => {
+                    const finalValue = parseInt(stat.textContent);
+                    
+                    // Reset to 0
+                    stat.textContent = '0';
+                    
+                    // Animate count up
+                    let currentValue = 0;
+                    const interval = setInterval(() => {
+                        currentValue += Math.ceil(finalValue / 20);
+                        
+                        if (currentValue >= finalValue) {
+                            clearInterval(interval);
+                            stat.textContent = finalValue;
+                        } else {
+                            stat.textContent = currentValue;
+                        }
+                    }, 50);
+                });
+            }
+            
+            // Pagination functionality (simplified for demo)
+            const pageNumbers = document.querySelectorAll('.page-number');
+            
+            if (pageNumbers.length) {
+                pageNumbers.forEach(page => {
+                    page.addEventListener('click', function() {
+                        // Remove active class from all page numbers
+                        pageNumbers.forEach(p => p.classList.remove('active'));
+                        
+                        // Add active class to clicked page
+                        this.classList.add('active');
+                        
+                        // In a real app, this would load the corresponding page of members
+                        // For now, just show a notification
+                        UI.showNotification(`Viewing page ${this.textContent}`, 'info');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

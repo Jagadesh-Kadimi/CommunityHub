@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details - Community Connect Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/animations.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <style>
+        /* Event Details Specific Styles */
+        .event-details-page {
+            padding-top: var(--space-xl);
+        }
+        
+        .event-details-container {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .event-details-header {
+            position: relative;
+            padding: var(--space-xl);
+            background-color: rgba(76, 175, 80, 0.1);
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .event-category-badge {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-sm);
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-size: var(--font-xs);
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-sm);
+            letter-spacing: 0.05em;
+        }
+        
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+        }
+        
+        .event-date-time, .event-location {
+            display: flex;
+            align-items: center;
+            color: var(--medium-dark);
+            font-size: var(--font-sm);
+        }
+        
+        .event-date-time i, .event-location i {
+            color: var(--primary-color);
+            margin-right: var(--space-xs);
+        }
+        
+        .event-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: var(--space-xl);
+            gap: var(--space-xl);
+        }
+        
+        .event-description-full {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .event-description-full h2 {
+            margin-bottom: var(--space-md);
+            color: var(--dark);
+            position: relative;
+            padding-bottom: var(--space-xs);
+        }
+        
+        .event-description-full h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .event-description-full p {
+            color: var(--medium-dark);
+            line-height: 1.8;
+        }
+        
+        .event-details-sidebar {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--light);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+            align-self: flex-start;
+        }
+        
+        .event-icon {
+            text-align: center;
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .event-attendance h3 {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background-color: var(--light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: var(--radius-md);
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .event-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        .event-organizer {
+            padding: var(--space-xl);
+            border-top: 1px solid var(--light);
+        }
+        
+        .organizer-info {
+            display: flex;
+            align-items: center;
+            margin-top: var(--space-md);
+        }
+        
+        .organizer-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius-round);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: var(--space-md);
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .organizer-details h3 {
+            margin-bottom: 0;
+        }
+        
+        .organizer-details p {
+            color: var(--medium);
+            margin-bottom: 0;
+        }
+        
+        .comments-section {
+            padding: var(--space-xl);
+            border-top: 1px solid var(--light);
+        }
+        
+        .comments-list {
+            margin-top: var(--space-lg);
+        }
+        
+        .comment-card {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius-round);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .comment-time {
+            font-size: var(--font-xs);
+            color: var(--medium);
+        }
+        
+        .comment-text {
+            margin-bottom: 0;
+            color: var(--medium-dark);
+        }
+        
+        .add-comment-form {
+            margin-top: var(--space-lg);
+        }
+        
+        .add-comment-form textarea {
+            width: 100%;
+            padding: var(--space-md);
+            border: 1px solid var(--medium-light);
+            border-radius: var(--radius-md);
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Confirmation dialog */
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .confirmation-dialog.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dialog-content {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        
+        .confirmation-dialog.active .dialog-content {
+            transform: scale(1);
+        }
+        
+        .dialog-header {
+            margin-bottom: var(--space-md);
+        }
+        
+        .dialog-header h3 {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        /* Responsive modifications */
+        @media (max-width: 768px) {
+            .event-content {
+                flex-direction: column;
+            }
+            
+            .event-details-sidebar {
+                order: -1;
+            }
+            
+            .event-meta {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#4CAF50"/>
+                    </svg>
+                    <span>Community Connect Hub</span>
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="events.html" class="active">Events</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li id="auth-link"><a href="login.html">Login</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Event Details Section -->
+    <section class="event-details-page page-enter">
+        <div class="container">
+            <div class="back-link">
+                <a href="events.html" class="btn btn-text">
+                    <i class="fas fa-arrow-left"></i> Back to Events
+                </a>
+            </div>
+            
+            <div id="event-details-container" class="event-details-container">
+                <!-- Event details will be loaded here -->
+                <div class="loading-placeholder">
+                    <div class="spinner"></div>
+                    <p>Loading event details...</p>
+                </div>
+            </div>
+            
+            <!-- Comments Section -->
+            <div class="comments-section card">
+                <h2>Discussion</h2>
+                
+                <div id="comments-list" class="comments-list">
+                    <!-- Comments will be loaded here -->
+                    <div class="comment-card">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">Kowsik Alluri</span>
+                                <span class="comment-time">2 days ago</span>
+                            </div>
+                            <p class="comment-text">Looking forward to this event! Can someone confirm if there will be parking available at the venue?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">Manikanta Gantina</span>
+                                <span class="comment-time">1 day ago</span>
+                            </div>
+                            <p class="comment-text">Yes, there's a parking lot right next to the venue with plenty of spaces!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="add-comment-section" class="add-comment-form">
+                    <h3>Add a Comment</h3>
+                    <form id="comment-form">
+                        <div class="form-group">
+                            <textarea id="comment-text" placeholder="Write your comment here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Similar Events Section -->
+            <div class="similar-events">
+                <h2>Similar Events You Might Like</h2>
+                <div id="similar-events-container" class="events-grid">
+                    <!-- Similar events will be loaded here -->
+                    <div class="loading-placeholder">
+                        <div class="spinner"></div>
+                        <p>Loading similar events...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmation-dialog" class="confirmation-dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3>Join Event Confirmation</h3>
+                <p>Are you sure you want to join this event?</p>
+            </div>
+            <div class="dialog-body">
+                <p>You'll be added to the list of attendees and will receive updates about this event.</p>
+            </div>
+            <div class="dialog-actions">
+                <button id="cancel-action" class="btn btn-outline">Cancel</button>
+                <button id="confirm-action" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.954 0 0 8.954 0 20C0 31.046 8.954 40 20 40C31.046 40 40 31.046 40 20C40 8.954 31.046 0 20 0ZM20 6C23.866 6 27 9.134 27 13C27 16.866 23.866 20 20 20C16.134 20 13 16.866 13 13C13 9.134 16.134 6 20 6ZM20 34.4C15 34.4 10.56 31.88 8 27.96C8.08 23.98 16 21.8 20 21.8C23.98 21.8 31.92 23.98 32 27.96C29.44 31.88 25 34.4 20 34.4Z" fill="#FFFFFF"/>
+                    </svg>
+                    <h3>Community Connect Hub</h3>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="events.html">Events</a></li>
+                            <li><a href="community.html">Community</a></li>
+                            <li><a href="create-event.html">Create Event</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Account</h4>
+                        <ul>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="signup.html">Sign Up</a></li>
+                            <li><a href="profile.html">Profile</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Community Connect Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification hidden">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <p class="notification-message"></p>
+        </div>
+        <button class="notification-close">×</button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/events.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get event ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('id');
+            
+            if (!eventId) {
+                // No event ID provided, redirect to events page
+                UI.showNotification('Event not found', 'error');
+                setTimeout(() => {
+                    window.location.href = 'events.html';
+                }, 2000);
+                return;
+            }
+            
+            let currentEvent = null;
+            let currentUser = null;
+            
+            // Load event details
+            async function loadEventDetails() {
+                UI.showLoading();
+                
+                try {
+                    // Get current user
+                    currentUser = Auth.getCurrentUser();
+                    
+                    // Get event details
+                    currentEvent = await DataService.getEventById(eventId);
+                    
+                    if (!currentEvent) {
+                        throw new Error('Event not found');
+                    }
+                    
+                    // Render event details
+                    renderEventDetails(currentEvent);
+                    
+                    // Load similar events
+                    loadSimilarEvents(currentEvent);
+                    
+                    // Load comments
+                    // This is a placeholder - in a real app, you'd load comments from a database
+                    // loadComments(eventId);
+                    
+                } catch (error) {
+                    console.error('Error loading event details:', error);
+                    UI.showNotification('Error loading event details', 'error');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'events.html';
+                    }, 2000);
+                } finally {
+                    UI.hideLoading();
+                }
+            }
+            
+            // Render event details
+            function renderEventDetails(event) {
+                const container = document.getElementById('event-details-container');
+                if (!container) return;
+                
+                const eventDate = new Date(event.date);
+                const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Determine icon based on category
+                let categoryIcon;
+                switch (event.category) {
+                    case 'social':
+                        categoryIcon = 'fas fa-users';
+                        break;
+                    case 'volunteer':
+                        categoryIcon = 'fas fa-hands-helping';
+                        break;
+                    case 'education':
+                        categoryIcon = 'fas fa-graduation-cap';
+                        break;
+                    case 'sports':
+                        categoryIcon = 'fas fa-running';
+                        break;
+                    default:
+                        categoryIcon = 'fas fa-calendar-alt';
+                }
+                
+                // Check attendance status
+                const isAttending = currentUser && event.attendees && event.attendees.includes(currentUser.id);
+                const isCreator = currentUser && event.createdBy === currentUser.id;
+                const isFull = event.attendees && event.attendees.length >= event.maxAttendees;
+                
+                // Prepare action button
+                let actionButton;
+                if (isCreator) {
+                    actionButton = `<button id="edit-event-btn" class="btn btn-primary">Edit Event</button>`;
+                } else if (isAttending) {
+                    actionButton = `<button id="leave-event-btn" class="btn btn-outline">Leave Event</button>`;
+                } else if (isFull) {
+                    actionButton = `<button class="btn btn-outline" disabled>Event Full</button>`;
+                } else {
+                    actionButton = `<button id="join-event-btn" class="btn btn-primary">Join Event</button>`;
+                }
+                
+                // Calculate attendance percentage
+                const attendeeCount = event.attendees ? event.attendees.length : 0;
+                const attendancePercentage = Math.min(100, (attendeeCount / event.maxAttendees) * 100);
+                
+                container.innerHTML = `
+                    <div class="event-details-header">
+                        <div class="event-category-badge">${event.category}</div>
+                        <h1 class="fade-in">${event.title}</h1>
+                        <div class="event-meta fade-in delay-1">
+                            <div class="event-date-time">
+                                <i class="fas fa-calendar-day"></i>
+                                <span>${formattedDate} at ${event.time}</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-content">
+                        <div class="event-description-full fade-in delay-2">
+                            <h2>About This Event</h2>
+                            <p>${event.description}</p>
+                        </div>
+                        
+                        <div class="event-details-sidebar fade-in delay-3">
+                            <div class="event-icon">
+                                <i class="${categoryIcon}"></i>
+                            </div>
+                            
+                            <div class="event-attendance">
+                                <h3>Attendance</h3>
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: ${attendancePercentage}%"></div>
+                                </div>
+                                <p>${attendeeCount} of ${event.maxAttendees} spots filled</p>
+                            </div>
+                            
+                            <div class="event-actions">
+                                ${actionButton}
+                                <button id="share-event-btn" class="btn btn-outline">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-organizer fade-in delay-4">
+                        <h2>Organized by</h2>
+                        <div class="organizer-info">
+                            <div class="organizer-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="organizer-details">
+                                <h3 id="organizer-name">Loading...</h3>
+                                <p>Event Organizer</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Load organizer info
+                loadOrganizerInfo(event.createdBy);
+                
+                // Add event listeners for action buttons
+                setupEventActions();
+            }
+            
+            // Load organizer information
+            async function loadOrganizerInfo(organizerId) {
+                try {
+                    const organizer = await DataService.getUserById(organizerId);
+                    const organizerNameElement = document.getElementById('organizer-name');
+                    
+                    if (organizerNameElement && organizer) {
+                        organizerNameElement.textContent = organizer.name;
+                    }
+                } catch (error) {
+                    console.error('Error loading organizer info:', error);
+                }
+            }
+            
+            // Setup event action buttons
+            function setupEventActions() {
+                // Join event button
+                const joinBtn = document.getElementById('join-event-btn');
+                if (joinBtn) {
+                    joinBtn.addEventListener('click', () => {
+                        if (!currentUser) {
+                            // Redirect to login if not logged in
+                            window.location.href = `login.html?redirect=event-details&id=${eventId}`;
+                            return;
+                        }
+                        
+                        // Show confirmation dialog
+                        showConfirmationDialog('join');
+                    });
+                }
+                
+                // Leave event button
+                const leaveBtn = document.getElementById('leave-event-btn');
+                if (leaveBtn) {
+                    leaveBtn.addEventListener('click', () => {
+                        showConfirmationDialog('leave');
+                    });
+                }
+                
+                // Edit event button
+                const editBtn = document.getElementById('edit-event-btn');
+                if (editBtn) {
+                    editBtn.addEventListener('click', () => {
+                        window.location.href = `create-event.html?edit=${eventId}`;
+                    });
+                }
+                
+                // Share event button
+                const shareBtn = document.getElementById('share-event-btn');
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', () => {
+                        const currentUrl = window.location.href;
+                        
+                        // Check if Web Share API is available
+                        if (navigator.share) {
+                            navigator.share({
+                                title: currentEvent.title,
+                                text: `Check out this event: ${currentEvent.title}`,
+                                url: currentUrl
+                            })
+                            .then(() => console.log('Successfully shared'))
+                            .catch((error) => console.log('Error sharing', error));
+                        } else {
+                            // Fallback to copying to clipboard
+                            navigator.clipboard.writeText(currentUrl)
+                                .then(() => {
+                                    UI.showNotification('Link copied to clipboard!', 'success');
+                                })
+                                .catch((error) => {
+                                    console.error('Could not copy text: ', error);
+                                    UI.showNotification('Failed to copy link', 'error');
+                                });
+                        }
+                    });
+                }
+                
+                // Comment form submission
+                const commentForm = document.getElementById('comment-form');
+                if (commentForm) {
+                    commentForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        
+                        if (!currentUser) {
+                            // Redirect to login if not logged in
+                            window.location.href = `login.html?redirect=event-details&id=${eventId}`;
+                            return;
+                        }
+                        
+                        const commentText = document.getElementById('comment-text').value.trim();
+                        
+                        if (commentText) {
+                            // In a real app, you'd save the comment to a database
+                            // For now, we'll just add it to the UI
+                            addCommentToUI({
+                                author: currentUser.name,
+                                text: commentText,
+                                timestamp: new Date().toISOString()
+                            });
+                            
+                            // Clear the form
+                            document.getElementById('comment-text').value = '';
+                            
+                            UI.showNotification('Comment posted successfully', 'success');
+                        }
+                    });
+                }
+            }
+            
+            // Show confirmation dialog
+            function showConfirmationDialog(action) {
+                const dialog = document.getElementById('confirmation-dialog');
+                const confirmBtn = document.getElementById('confirm-action');
+                const cancelBtn = document.getElementById('cancel-action');
+                const dialogTitle = dialog.querySelector('.dialog-header h3');
+                const dialogText = dialog.querySelector('.dialog-header p');
+                const dialogBody = dialog.querySelector('.dialog-body p');
+                
+                // Set dialog content based on action
+                if (action === 'join') {
+                    dialogTitle.textContent = 'Join Event Confirmation';
+                    dialogText.textContent = 'Are you sure you want to join this event?';
+                    dialogBody.textContent = 'You\'ll be added to the list of attendees and will receive updates about this event.';
+                } else if (action === 'leave') {
+                    dialogTitle.textContent = 'Leave Event Confirmation';
+                    dialogText.textContent = 'Are you sure you want to leave this event?';
+                    dialogBody.textContent = 'You\'ll be removed from the list of attendees and will no longer receive updates about this event.';
+                }
+                
+                // Show dialog
+                dialog.classList.add('active');
+                
+                // Handle confirm button
+                confirmBtn.onclick = async () => {
+                    dialog.classList.remove('active');
+                    UI.showLoading();
+                    
+                    try {
+                        if (action === 'join') {
+                            await joinEvent();
+                        } else if (action === 'leave') {
+                            await leaveEvent();
+                        }
+                    } catch (error) {
+                        console.error(`Error ${action}ing event:`, error);
+                        UI.showNotification(`Error ${action}ing event`, 'error');
+                    } finally {
+                        UI.hideLoading();
+                    }
+                };
+                
+                // Handle cancel button
+                cancelBtn.onclick = () => {
+                    dialog.classList.remove('active');
+                };
+                
+                // Close dialog when clicking outside
+                dialog.onclick = (e) => {
+                    if (e.target === dialog) {
+                        dialog.classList.remove('active');
+                    }
+                };
+            }
+            
+            // Join event
+            async function joinEvent() {
+                if (!currentUser || !currentEvent) return;
+                
+                try {
+                    // Make sure attendees array exists
+                    if (!currentEvent.attendees) {
+                        currentEvent.attendees = [];
+                    }
+                    
+                    // Check if already attending
+                    if (currentEvent.attendees.includes(currentUser.id)) {
+                        UI.showNotification('You are already attending this event', 'info');
+                        return;
+                    }
+                    
+                    // Check if event is full
+                    if (currentEvent.attendees.length >= currentEvent.maxAttendees) {
+                        UI.showNotification('This event is full', 'error');
+                        return;
+                    }
+                    
+                    // Add user to attendees
+                    currentEvent.attendees.push(currentUser.id);
+                    
+                    // Update event in storage
+                    await DataService.updateEvent(currentEvent);
+                    
+                    // Show success message
+                    UI.showNotification('You have successfully joined the event!', 'success');
+                    
+                    // Reload the page to refresh UI
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Error joining event:', error);
+                    UI.showNotification('Error joining event', 'error');
+                }
+            }
+            
+            // Leave event
+            async function leaveEvent() {
+                if (!currentUser || !currentEvent) return;
+                
+                try {
+                    // Check if user is attending
+                    if (!currentEvent.attendees || !currentEvent.attendees.includes(currentUser.id)) {
+                        UI.showNotification('You are not attending this event', 'info');
+                        return;
+                    }
+                    
+                    // Remove user from attendees
+                    currentEvent.attendees = currentEvent.attendees.filter(id => id !== currentUser.id);
+                    
+                    // Update event in storage
+                    await DataService.updateEvent(currentEvent);
+                    
+                    // Show success message
+                    UI.showNotification('You have left the event', 'info');
+                    
+                    // Reload the page to refresh UI
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Error leaving event:', error);
+                    UI.showNotification('Error leaving event', 'error');
+                }
+            }
+            
+            // Load similar events
+            async function loadSimilarEvents(event) {
+                try {
+                    const allEvents = await DataService.getEvents();
+                    
+                    // Filter for events in the same category
+                    let similarEvents = allEvents.filter(e => 
+                        e.id !== event.id && e.category === event.category
+                    );
+                    
+                    // Sort by date (closest first)
+                    similarEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    
+                    // Limit to 3 events
+                    similarEvents = similarEvents.slice(0, 3);
+                    
+                    // Render similar events
+                    const container = document.getElementById('similar-events-container');
+                    
+                    if (!container) return;
+                    
+                    if (similarEvents.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-times"></i>
+                                <p>No similar events found.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    container.innerHTML = '';
+                    
+                    // Add events to container
+                    similarEvents.forEach((event, index) => {
+                        const card = UI.createEventCard(event, index * 100);
+                        container.appendChild(card);
+                    });
+                    
+                } catch (error) {
+                    console.error('Error loading similar events:', error);
+                    
+                    const container = document.getElementById('similar-events-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <p>Failed to load similar events.</p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            // Add a comment to the UI
+            function addCommentToUI(comment) {
+                const commentsList = document.getElementById('comments-list');
+                if (!commentsList) return;
+                
+                const commentCard = document.createElement('div');
+                commentCard.className = 'comment-card fade-in';
+                
+                // Format relative time
+                const timeAgo = getRelativeTime(new Date(comment.timestamp));
+                
+                commentCard.innerHTML = `
+                    <div class="comment-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.author}</span>
+                            <span class="comment-time">${timeAgo}</span>
+                        </div>
+                        <p class="comment-text">${comment.text}</p>
+                    </div>
+                `;
+                
+                // Add to the top of the list
+                commentsList.insertBefore(commentCard, commentsList.firstChild);
+            }
+            
+            // Get relative time string (e.g., "2 hours ago")
+            function getRelativeTime(date) {
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - date) / 1000);
+                
+                if (diffInSeconds < 60) {
+                    return 'just now';
+                }
+                
+                const diffInMinutes = Math.floor(diffInSeconds / 60);
+                if (diffInMinutes < 60) {
+                    return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+                }
+                
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                if (diffInHours < 24) {
+                    return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+                }
+                
+                const diffInDays = Math.floor(diffInHours / 24);
+                if (diffInDays < 30) {
+                    return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+                }
+                
+                const diffInMonths = Math.floor(diffInDays / 30);
+                if (diffInMonths < 12) {
+                    return `${diffInMonths} month${diffInMonths > 1 ? 's' : ''} ago`;
+                }
+                
+                const diffInYears = Math.floor(diffInMonths / 12);
+                return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
+            }
+            
+            // Initialize the page
+            loadEventDetails();
+        });
+    </script>
+</body>
+</html>
