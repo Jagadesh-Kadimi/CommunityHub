@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/animations.css">
     <link rel="stylesheet" href="../css/responsive.css">
     <style>
-        /* Community Page Specific Styles */
+        
         .community-hero {
             background: linear-gradient(to right, rgba(76, 175, 80, 0.8), rgba(76, 175, 80, 0.6)), url('https://source.unsplash.com/random/1600x900/?community');
             background-size: cover;
@@ -323,12 +323,12 @@
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
+  
     <div id="loading-overlay" class="hidden">
         <div class="spinner"></div>
     </div>
     
-    <!-- Header -->
+   
     <header>
         <div class="container">
             <div class="logo">
@@ -353,7 +353,6 @@
         </div>
     </header>
 
-    <!-- Community Hero Section -->
     <section class="community-hero">
         <div class="container">
             <h1 class="fade-in">Our Community</h1>
@@ -387,7 +386,7 @@
         </div>
     </section>
 
-    <!-- Community Members Section -->
+ 
     <section class="members-section">
         <div class="container">
             <h2 class="section-title">Community Members</h2>
@@ -400,7 +399,7 @@
             </div>
             
             <div id="community-members" class="members-grid">
-                <!-- Members will be loaded here -->
+      
                 <div class="loading-placeholder">
                     <div class="spinner"></div>
                     <p>Loading community members...</p>
@@ -415,13 +414,13 @@
         </div>
     </section>
 
-    <!-- Community Events Section -->
+
     <section class="community-events-section">
         <div class="container">
             <h2 class="section-title">Upcoming Community Events</h2>
             
             <div id="community-events" class="events-grid">
-                <!-- Events will be loaded here -->
+             
                 <div class="loading-placeholder">
                     <div class="spinner"></div>
                     <p>Loading community events...</p>
@@ -435,8 +434,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Community Initiatives Section -->
     <section class="community-initiatives">
         <div class="container">
             <h2 class="section-title">Community Initiatives</h2>
@@ -478,7 +475,7 @@
         </div>
     </section>
 
-    <!-- Join CTA -->
+
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
@@ -489,7 +486,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -534,7 +531,7 @@
         </div>
     </footer>
 
-    <!-- Notification Toast -->
+  
     <div id="notification-toast" class="notification hidden">
         <div class="notification-content">
             <i class="notification-icon"></i>
@@ -543,7 +540,7 @@
         <button class="notification-close">×</button>
     </div>
     
-    <!-- Scripts -->
+
     <script src="../js/data.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/events.js"></script>
@@ -554,13 +551,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const currentUser = Auth.getCurrentUser();
             
-            // Update navigation based on auth status
+         
             UI.updateAuthUI(currentUser);
             
-            // Initialize the page
+            
             loadCommunityData();
             
-            // Member search functionality
+      
             const searchInput = document.getElementById('members-search');
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
@@ -569,18 +566,18 @@
                 });
             }
             
-            // Load community data
+     
             async function loadCommunityData() {
                 UI.showLoading();
                 
                 try {
-                    // Load community members
+                   
                     await loadCommunityMembers();
                     
-                    // Load upcoming events
+                  
                     await loadUpcomingEvents();
                     
-                    // Update community stats
+                  
                     updateCommunityStats();
                     
                 } catch (error) {
@@ -591,16 +588,14 @@
                 }
             }
             
-            // Load community members
+        
             async function loadCommunityMembers() {
                 try {
-                    // Get community members
+                   
                     const users = await DataService.getUsers();
-                    
-                    // Update members count
+                   
                     document.getElementById('members-count').textContent = users.length;
-                    
-                    // Render members
+                 
                     renderCommunityMembers(users);
                     
                     return users;
@@ -610,12 +605,10 @@
                 }
             }
             
-            // Render community members
             function renderCommunityMembers(users) {
                 const container = document.getElementById('community-members');
                 if (!container) return;
                 
-                // Clear container
                 container.innerHTML = '';
                 
                 if (users.length === 0) {
@@ -628,13 +621,11 @@
                     return;
                 }
                 
-                // Create member cards
                 users.forEach((user, index) => {
                     const memberCard = document.createElement('div');
                     memberCard.className = 'member-card fade-in';
                     memberCard.style.animationDelay = `${index * 0.1}s`;
                     
-                    // Format date
                     const joinDate = new Date(user.createdAt);
                     const joinDateFormatted = joinDate.toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -674,15 +665,12 @@
                     
                     container.appendChild(memberCard);
                     
-                    // Get event statistics for this user
                     getUserEventStats(user.id);
                 });
                 
-                // Add event listeners to connect buttons
                 setupConnectButtons();
             }
             
-            // Filter members based on search term
             function filterMembers(searchTerm) {
                 const memberCards = document.querySelectorAll('.member-card');
                 
@@ -700,7 +688,6 @@
                     }
                 });
                 
-                // Show empty state if no results
                 const container = document.getElementById('community-members');
                 const emptyState = container.querySelector('.empty-state');
                 
@@ -719,19 +706,14 @@
                 }
             }
             
-            // Load upcoming events
             async function loadUpcomingEvents() {
                 try {
-                    // Get all events
                     const events = await DataService.getEvents();
                     
-                    // Update events count
                     document.getElementById('events-count').textContent = events.length;
                     
-                    // Filter upcoming events
                     const upcomingEvents = getUpcomingEvents(events, 3);
                     
-                    // Render events
                     renderCommunityEvents(upcomingEvents);
                     
                     return events;
@@ -741,22 +723,18 @@
                 }
             }
             
-            // Get upcoming events
             function getUpcomingEvents(events, limit = 3) {
                 const today = new Date();
                 
-                // Filter for events with dates in the future
                 let upcomingEvents = events.filter(event => {
                     const eventDate = new Date(event.date);
                     return eventDate >= today;
                 });
                 
-                // Sort by date (closest first)
                 upcomingEvents.sort((a, b) => {
                     return new Date(a.date) - new Date(b.date);
                 });
                 
-                // Limit to specified number
                 if (limit) {
                     upcomingEvents = upcomingEvents.slice(0, limit);
                 }
@@ -764,12 +742,10 @@
                 return upcomingEvents;
             }
             
-            // Render community events
             function renderCommunityEvents(events) {
                 const container = document.getElementById('community-events');
                 if (!container) return;
                 
-                // Clear container
                 container.innerHTML = '';
                 
                 if (events.length === 0) {
@@ -783,27 +759,27 @@
                     return;
                 }
                 
-                // Create event cards
+             
                 events.forEach((event, index) => {
                     const card = UI.createEventCard(event, index * 100);
                     container.appendChild(card);
                 });
             }
             
-            // Get event statistics for a user
+         
             async function getUserEventStats(userId) {
                 try {
                     const events = await DataService.getEvents();
                     
-                    // Count events created by user
+                    
                     const eventsCreated = events.filter(event => event.createdBy === userId).length;
                     
-                    // Count events joined by user
+                  
                     const eventsJoined = events.filter(event => 
                         event.attendees && event.attendees.includes(userId)
                     ).length;
                     
-                    // Update stats in UI
+                 
                     const createdElement = document.getElementById(`events-created-${userId}`);
                     const joinedElement = document.getElementById(`events-joined-${userId}`);
                     
